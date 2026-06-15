@@ -38,7 +38,7 @@ coffee-center-mobile/
 ├── components/
 │   ├── Topo.js                 # Cabeçalho reutilizável (logo + menu)
 │   └── Rodape.js               # Rodapé reutilizável
-├── config.js                   # ⚠️ URL do servidor (altere o IP aqui)
+├── config.js                   #  URL do servidor (altere o IP aqui)
 ├── package.json
 ├── app.json
 └── babel.config.js
@@ -56,11 +56,3 @@ coffee-center-mobile/
 | JavaScript | ES2022 | Linguagem de programação |
 
 ---
-
-## Pré-requisitos
-
-Antes de começar, você precisa ter instalado:
-
-- [Node.js](https://nodejs.org/) (versão 18 ou superior)
-- [Expo Go](https://expo.dev/go) no seu celular **ou** um emulador Android/iOS
-]]
