@@ -40,7 +40,7 @@ export default function Detalhes() {
         </TouchableOpacity>
 
         {/* EMOJI DECORATIVO */}
-        <Text style={styles.emoji}>☕</Text>
+        <Text style={styles.emoji}></Text>
 
         {/* TÍTULO DO ITEM */}
         <Text style={styles.titulo}>{titulo}</Text>
@@ -52,13 +52,13 @@ export default function Detalhes() {
 
         {/* DESCRIÇÃO COMPLETA */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>📝 Descrição</Text>
+          <Text style={styles.secaoTitulo}> Descrição</Text>
           <Text style={styles.secaoTexto}>{descricao}</Text>
         </View>
 
         {/* INGREDIENTES */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>🌿 Ingredientes</Text>
+          <Text style={styles.secaoTitulo}> Ingredientes</Text>
           <Text style={styles.secaoTexto}>{ingredientes}</Text>
         </View>
 
@@ -66,22 +66,22 @@ export default function Detalhes() {
         <View style={styles.infoGrid}>
 
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>🗺️ Origem</Text>
+            <Text style={styles.infoLabel}> Origem</Text>
             <Text style={styles.infoValor}>{origem}</Text>
           </View>
 
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>⏱️ Preparo</Text>
+            <Text style={styles.infoLabel}> Preparo</Text>
             <Text style={styles.infoValor}>{tempoPreparo}</Text>
           </View>
 
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>🏷️ Categoria</Text>
+            <Text style={styles.infoLabel}> Categoria</Text>
             <Text style={styles.infoValor}>{categoria}</Text>
           </View>
 
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>📊 Nível</Text>
+            <Text style={styles.infoLabel}> Nível</Text>
             <Text style={styles.infoValor}>{nivel}</Text>
           </View>
 

@@ -25,7 +25,7 @@ export default function Sobre() {
 
         {/* NOSSA HISTÓRIA */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>☕ Nossa História</Text>
+          <Text style={styles.secaoTitulo}> Nossa História</Text>
           <Text style={styles.secaoTexto}>
             Fundada com a paixão pelo café especial, a Coffee Center nasceu do desejo de conectar pessoas através de uma xícara bem preparada. Buscamos unir tradição e inovação para proporcionar momentos únicos aos nossos clientes.
           </Text>
@@ -33,7 +33,7 @@ export default function Sobre() {
 
         {/* NOSSA MISSÃO */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>🎯 Nossa Missão</Text>
+          <Text style={styles.secaoTitulo}> Nossa Missão</Text>
           <Text style={styles.secaoTexto}>
             Transformar cada xícara em uma experiência única por meio do café especial, com atendimento humanizado e um ambiente acolhedor que faz você querer voltar sempre.
           </Text>
@@ -41,7 +41,7 @@ export default function Sobre() {
 
         {/* NOSSA VISÃO */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>🔭 Nossa Visão</Text>
+          <Text style={styles.secaoTitulo}>Nossa Visão</Text>
           <Text style={styles.secaoTexto}>
             Ser reconhecida como referência em qualidade, inovação e excelência no mercado de cafeterias, levando o melhor do café especial a cada cliente.
           </Text>
@@ -49,7 +49,7 @@ export default function Sobre() {
 
         {/* NOSSOS VALORES */}
         <View style={styles.secao}>
-          <Text style={styles.secaoTitulo}>💎 Nossos Valores</Text>
+          <Text style={styles.secaoTitulo}> Nossos Valores</Text>
 
           <View style={styles.valorItem}>
             <Text style={styles.valorBullet}>•</Text>
@@ -90,26 +90,26 @@ export default function Sobre() {
 
         {/* DIFERENCIAIS */}
         <View style={styles.diferenciais}>
-          <Text style={styles.secaoTitulo}>⭐ Nossos Diferenciais</Text>
+          <Text style={styles.secaoTitulo}> Nossos Diferenciais</Text>
           <View style={styles.diferencialGrid}>
 
             <View style={styles.diferencialItem}>
-              <Text style={styles.diferencialEmoji}>🌱</Text>
+              <Text style={styles.diferencialEmoji}></Text>
               <Text style={styles.diferencialTexto}>Grãos Selecionados</Text>
             </View>
 
             <View style={styles.diferencialItem}>
-              <Text style={styles.diferencialEmoji}>👨‍🍳</Text>
+              <Text style={styles.diferencialEmoji}></Text>
               <Text style={styles.diferencialTexto}>Equipe Treinada</Text>
             </View>
 
             <View style={styles.diferencialItem}>
-              <Text style={styles.diferencialEmoji}>🏠</Text>
+              <Text style={styles.diferencialEmoji}></Text>
               <Text style={styles.diferencialTexto}>Ambiente Confortável</Text>
             </View>
 
             <View style={styles.diferencialItem}>
-              <Text style={styles.diferencialEmoji}>🤝</Text>
+              <Text style={styles.diferencialEmoji}></Text>
               <Text style={styles.diferencialTexto}>Atendimento Personalizado</Text>
             </View>
 

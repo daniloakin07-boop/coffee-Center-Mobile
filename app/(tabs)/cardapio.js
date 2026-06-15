@@ -13,8 +13,8 @@ import { API_URL } from '../../config';
 // ============================================================
 // DADOS DO CARDÁPIO
 // Array de objetos com todas as informações de cada item.
-// As imagens usam require() — obrigatório no React Native para
-// imagens locais (caminhos dinâmicos não funcionam com require).
+// As imagens usam require() 
+
 // ============================================================
 const cardapioData = [
   {
@@ -196,9 +196,6 @@ export default function Cardapio() {
 
   // ============================================================
   // RENDERIZAÇÃO COM FLATLIST
-  // ListHeaderComponent = Topo + campo de busca
-  // ListFooterComponent = Rodapé
-  // data = lista filtrada pelo estado 'busca'
   // ============================================================
   return (
     <FlatList

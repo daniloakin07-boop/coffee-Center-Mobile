@@ -38,13 +38,13 @@ export default function Login() {
 
     // Validação 1: campos obrigatórios
     if (!email || !senha) {
-      setMensagem('⚠️ Preencha todos os campos.');
+      setMensagem(' Preencha todos os campos.');
       return;
     }
 
     // Validação 2: formato do e-mail
     if (!email.includes('@')) {
-      setMensagem('⚠️ Informe um e-mail válido.');
+      setMensagem('Informe um e-mail válido.');
       return;
     }
 
@@ -60,16 +60,16 @@ export default function Login() {
       });
 
       if (resposta.ok) {
-        setMensagem('✅ Login realizado com sucesso!');
+        setMensagem(' Login realizado com sucesso!');
         // Navega para o cardápio após login bem-sucedido
         setTimeout(() => {
           router.replace('/cardapio');
         }, 1000);
       } else {
-        setMensagem('❌ E-mail ou senha incorretos.');
+        setMensagem(' E-mail ou senha incorretos.');
       }
     } catch {
-      setMensagem('❌ Erro ao conectar com o servidor.');
+      setMensagem(' Erro ao conectar com o servidor.');
     } finally {
       setCarregando(false);
     }

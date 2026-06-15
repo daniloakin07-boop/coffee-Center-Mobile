@@ -54,7 +54,7 @@ export default function Contato() {
 
       if (resposta.ok) {
         Alert.alert(
-          '✅ Mensagem enviada!',
+          ' Mensagem enviada!',
           `Obrigado, ${nome}! Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.`
         );
         // Limpa os campos após envio bem-sucedido
@@ -67,7 +67,7 @@ export default function Contato() {
     } catch {
       // Mesmo sem servidor, confirma o envio localmente para demonstração
       Alert.alert(
-        '✅ Mensagem registrada!',
+        'Mensagem registrada!',
         `Obrigado, ${nome}! Sua mensagem foi registrada.`
       );
       setNome('');
@@ -144,11 +144,11 @@ export default function Contato() {
 
         {/* INFORMAÇÕES DE CONTATO */}
         <View style={styles.infoContato}>
-          <Text style={styles.infoTitulo}>📍 Onde nos encontrar</Text>
+          <Text style={styles.infoTitulo}> Onde nos encontrar</Text>
           <Text style={styles.infoTexto}>Brasília - DF</Text>
-          <Text style={styles.infoTitulo}>📧 E-mail</Text>
+          <Text style={styles.infoTitulo}> E-mail</Text>
           <Text style={styles.infoTexto}>contato@coffeecenter.com.br</Text>
-          <Text style={styles.infoTitulo}>📱 Horário</Text>
+          <Text style={styles.infoTitulo}> Horário</Text>
           <Text style={styles.infoTexto}>Segunda a Sábado: 7h às 22h</Text>
         </View>
 

@@ -40,25 +40,25 @@ export default function Cadastro() {
 
     // Validação 1: campos obrigatórios
     if (!nome || !email || !senha || !confirmarSenha) {
-      setMensagem('⚠️ Preencha todos os campos.');
+      setMensagem(' Preencha todos os campos.');
       return;
     }
 
     // Validação 2: formato do e-mail
     if (!email.includes('@')) {
-      setMensagem('⚠️ Informe um e-mail válido.');
+      setMensagem(' Informe um e-mail válido.');
       return;
     }
 
     // Validação 3: tamanho mínimo da senha
     if (senha.length < 6) {
-      setMensagem('⚠️ A senha deve ter no mínimo 6 caracteres.');
+      setMensagem(' A senha deve ter no mínimo 6 caracteres.');
       return;
     }
 
     // Validação 4: senhas coincidem
     if (senha !== confirmarSenha) {
-      setMensagem('⚠️ As senhas não coincidem.');
+      setMensagem(' As senhas não coincidem.');
       return;
     }
 
@@ -73,17 +73,17 @@ export default function Cadastro() {
       });
 
       if (resposta.ok) {
-        setMensagem('✅ Cadastro realizado! Redirecionando...');
+        setMensagem(' Cadastro realizado! Redirecionando...');
         // Navega para o login após cadastro bem-sucedido
         setTimeout(() => {
           router.replace('/login');
         }, 1500);
       } else {
         const dados = await resposta.json();
-        setMensagem(`❌ ${dados.erro || 'Erro ao realizar cadastro.'}`);
+        setMensagem(` ${dados.erro || 'Erro ao realizar cadastro.'}`);
       }
     } catch {
-      setMensagem('❌ Erro ao conectar com o servidor.');
+      setMensagem(' Erro ao conectar com o servidor.');
     } finally {
       setCarregando(false);
     }
