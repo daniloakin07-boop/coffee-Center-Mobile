@@ -4,6 +4,7 @@
 
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link, usePathname } from 'expo-router';
+import { isLoggedIn } from '../auth';
 
 export default function Topo() {
   // usePathname retorna a rota atual — usada para destacar o item ativo no menu
@@ -32,7 +33,7 @@ export default function Topo() {
           </TouchableOpacity>
         </Link>
 
-        <Link href="/cardapio" asChild>
+        <Link href={isLoggedIn() ? '/cardapio' : '/login'} asChild>
           <TouchableOpacity>
             <Text style={[styles.menuItem, pathname === '/cardapio' && styles.menuItemAtivo]}>
               Cardápio

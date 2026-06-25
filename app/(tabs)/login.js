@@ -16,6 +16,7 @@ import { Link, useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 import { API_URL } from '../../config';
+import { login as loginUser } from '../../auth';
 
 export default function Login() {
   // ============================================================
@@ -60,6 +61,7 @@ export default function Login() {
       });
 
       if (resposta.ok) {
+        loginUser();
         setMensagem(' Login realizado com sucesso!');
         // Navega para o cardápio após login bem-sucedido
         setTimeout(() => {
@@ -132,7 +134,7 @@ export default function Login() {
             {mensagem !== '' && (
               <Text style={[
                 styles.mensagemAuth,
-                mensagem.startsWith('✅') ? styles.mensagemSucesso : styles.mensagemErro
+                mensagem.startsWith('ok') ? styles.mensagemSucesso : styles.mensagemErro
               ]}>
                 {mensagem}
               </Text>

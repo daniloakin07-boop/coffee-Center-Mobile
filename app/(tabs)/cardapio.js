@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { Link, useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
-import { API_URL } from '../../config';
+import { isLoggedIn } from '../../auth';
 
 // ============================================================
 // DADOS DO CARDÁPIO
@@ -132,21 +132,13 @@ export default function Cardapio() {
     verificarLogin();
   }, []);
 
-  async function verificarLogin() {
-    try {
-      const resposta = await fetch(`${API_URL}/me`, {
-        credentials: 'include',
-      });
-      if (!resposta.ok) {
-        Alert.alert(
-          'Acesso Restrito',
-          'Você precisa fazer login para acessar o cardápio!',
-          [{ text: 'Fazer Login', onPress: () => router.replace('/login') }]
-        );
-      }
-    } catch {
-      // Servidor offline — exibe cardápio sem autenticação
-      console.log('Servidor offline — exibindo cardápio localmente.');
+  function verificarLogin() {
+    if (!isLoggedIn()) {
+      Alert.alert(
+        'Acesso Restrito',
+        'Você precisa fazer login para acessar o cardápio!',
+        [{ text: 'Fazer Login', onPress: () => router.replace('/login') }]
+      );
     }
   }
 
