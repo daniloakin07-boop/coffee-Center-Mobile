@@ -139,6 +139,7 @@ export default function Cardapio() {
         'Você precisa fazer login para acessar o cardápio!',
         [{ text: 'Fazer Login', onPress: () => router.replace('/login') }]
       );
+      router.replace('/login');
     }
   }
 

@@ -134,7 +134,7 @@ export default function Login() {
             {mensagem !== '' && (
               <Text style={[
                 styles.mensagemAuth,
-                mensagem.startsWith('ok') ? styles.mensagemSucesso : styles.mensagemErro
+                mensagem.toLowerCase().includes('sucesso') ? styles.mensagemSucesso : styles.mensagemErro
               ]}>
                 {mensagem}
               </Text>
