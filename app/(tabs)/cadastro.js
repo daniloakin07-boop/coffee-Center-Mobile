@@ -167,7 +167,7 @@ export default function Cadastro() {
             {mensagem !== '' && (
               <Text style={[
                 styles.mensagemAuth,
-                mensagem.startsWith('✅') ? styles.mensagemSucesso : styles.mensagemErro
+                mensagem.startsWith('ok') ? styles.mensagemSucesso : styles.mensagemErro
               ]}>
                 {mensagem}
               </Text>

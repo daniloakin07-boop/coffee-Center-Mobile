@@ -3,10 +3,12 @@
 // Equivalente à tela de detalhes do projeto TechEduca (Aula 11).
 // Recebe os dados via parâmetros usando useLocalSearchParams.
 
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
+import { API_URL } from '../../config';
 
 export default function Detalhes() {
   // useLocalSearchParams captura os parâmetros enviados pela tela cardapio.js
@@ -24,6 +26,32 @@ export default function Detalhes() {
 
   // useRouter permite navegação programática (ex: voltar à tela anterior)
   const router = useRouter();
+
+  // ============================================================
+  // VERIFICAÇÃO DE LOGIN AO ABRIR A TELA
+  // Equivalente ao padrão usado no cardapio.js
+  // ============================================================
+  useEffect(() => {
+    verificarLogin();
+  }, []);
+
+  async function verificarLogin() {
+    try {
+      const resposta = await fetch(`${API_URL}/me`, {
+        credentials: 'include',
+      });
+      if (!resposta.ok) {
+        Alert.alert(
+          'Acesso Restrito',
+          'Você precisa fazer login para acessar os detalhes!',
+          [{ text: 'Fazer Login', onPress: () => router.replace('/login') }]
+        );
+      }
+    } catch {
+      // Servidor offline — exibe detalhes sem autenticação
+      console.log('Servidor offline — exibindo detalhes localmente.');
+    }
+  }
 
   return (
     <ScrollView style={styles.tela} showsVerticalScrollIndicator={false}>
