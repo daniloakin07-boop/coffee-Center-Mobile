@@ -1,6 +1,9 @@
 // app/(tabs)/index.js
 // Tela Inicial — equivalente ao index.html do projeto web.
 // Contém: seção hero com botões e cards de destaque.
+//react-native e tudo que esta dentro do return é o que vai ser renderizado na tela do app, o resto é apenas estilização
+//stylee sheet é o que contem todos os estilos que a gente usa é literalmente uma lista
+
 
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
