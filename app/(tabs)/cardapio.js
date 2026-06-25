@@ -8,10 +8,11 @@ import { useState, useEffect } from 'react';
 import { Link, useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
-import { isLoggedIn } from '../../auth';
+import { isLoggedIn } from '../../auth'; // função simples que retorna se o usuário está logado
 
 // ============================================================
 // DADOS DO CARDÁPIO
+// Estes itens são usados para mostrar o menu na tela.
 // Array de objetos com todas as informações de cada item.
 // As imagens usam require() 
 
@@ -132,6 +133,8 @@ export default function Cardapio() {
     verificarLogin();
   }, []);
 
+  // Verifica se o usuário está logado antes de mostrar o cardápio
+  // Se não estiver, exibe alerta e manda para a tela de login
   function verificarLogin() {
     if (!isLoggedIn()) {
       Alert.alert(
@@ -149,6 +152,7 @@ export default function Cardapio() {
   );
 
   // Função que renderiza cada card do cardápio na FlatList
+  // Cada item mostra imagem, nome, descrição e botão de detalhes
   function renderItem({ item }) {
     return (
       <View style={styles.item}>

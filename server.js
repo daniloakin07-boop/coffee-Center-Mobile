@@ -1,3 +1,4 @@
+// Backend server for Coffee Center Mobile
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -7,11 +8,14 @@ const conexao = require("./db.js");
 
 const app = express();
 
+// Lista de origens permitidas para acessar a API
+// Isso evita chamadas não autorizadas de domínios desconhecidos.
 const listOrigins = [
     "http://localhost:8081",
     "http://localhost:5501",
     "http://127.0.0.1:5501",
-    "https://rickjordan20.github.io"
+    "https://rickjordan20.github.io",
+    "https://coffee-center-mobile.onrender.com"
 ];
 
 app.use(cors({
@@ -24,6 +28,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Configuração de sessão do Express usada para manter o login do usuário
 const sessionConfig = {
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -45,6 +50,9 @@ if(process.env.NODE_ENV === "production"){
 }
 
 app.use(session(sessionConfig));
+
+// Middleware de sessão habilitado
+// As rotas abaixo podem usar informações de sessão se necessário.
 
 // Rota principal
 app.get("/", (req, res) => {
@@ -114,7 +122,8 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Rota de Mensagem (Fale Conosco)
+// Rota de Mensagem (Fale Conosco) - salva o contato no banco
+// Recebe nome, e-mail e mensagem do usuário e grava em uma tabela de mensagens.
 app.post("/mensagem", async (req, res) => {
     try {
         const { nome, email, mensagem } = req.body;
@@ -134,7 +143,7 @@ app.post("/mensagem", async (req, res) => {
     }
 });
 
-// Inicia o servidor
+// Inicia o servidor na porta definida pelas variáveis de ambiente
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

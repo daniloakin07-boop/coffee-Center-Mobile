@@ -1,4 +1,6 @@
 
+// Rodapé global usado em todas as telas
+// Mostra informações de direitos autorais e link rápido para contato.
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 

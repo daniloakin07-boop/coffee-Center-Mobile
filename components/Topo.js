@@ -33,6 +33,7 @@ export default function Topo() {
           </TouchableOpacity>
         </Link>
 
+        {/* Se não estiver logado, direciona o usuário para a tela de login */}
         <Link href={isLoggedIn() ? '/cardapio' : '/login'} asChild>
           <TouchableOpacity>
             <Text style={[styles.menuItem, pathname === '/cardapio' && styles.menuItemAtivo]}>

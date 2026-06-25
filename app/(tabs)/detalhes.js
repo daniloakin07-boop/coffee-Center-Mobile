@@ -35,6 +35,8 @@ export default function Detalhes() {
     verificarLogin();
   }, []);
 
+  // Se o usuário não estiver logado, ele é redirecionado para a tela de login
+
   async function verificarLogin() {
     try {
       const resposta = await fetch(`${API_URL}/me`, {

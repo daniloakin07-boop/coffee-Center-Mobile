@@ -26,6 +26,7 @@ export default function Cadastro() {
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mensagem, setMensagem] = useState('');
+  const [sucesso, setSucesso] = useState(false);
   const [carregando, setCarregando] = useState(false);
 
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function Cadastro() {
 
       if (resposta.ok) {
         setMensagem(' Cadastro realizado! Redirecionando...');
+        setSucesso(true);
         // Navega para o login após cadastro bem-sucedido
         setTimeout(() => {
           router.replace('/login');
@@ -81,9 +83,11 @@ export default function Cadastro() {
       } else {
         const dados = await resposta.json();
         setMensagem(` ${dados.erro || 'Erro ao realizar cadastro.'}`);
+        setSucesso(false);
       }
     } catch {
       setMensagem(' Erro ao conectar com o servidor.');
+      setSucesso(false);
     } finally {
       setCarregando(false);
     }
@@ -167,7 +171,7 @@ export default function Cadastro() {
             {mensagem !== '' && (
               <Text style={[
                 styles.mensagemAuth,
-                mensagem.startsWith('ok') ? styles.mensagemSucesso : styles.mensagemErro
+                sucesso ? styles.mensagemSucesso : styles.mensagemErro
               ]}>
                 {mensagem}
               </Text>

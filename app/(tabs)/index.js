@@ -10,6 +10,7 @@ import { Link } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 
+// Tela inicial do app com destaque para o cardápio e informações rápidas.
 export default function Inicio() {
   return (
     <ScrollView style={styles.tela} showsVerticalScrollIndicator={false}>
@@ -28,12 +29,14 @@ export default function Inicio() {
 
         {/* BOTÕES DE AÇÃO */}
         <View style={styles.botoes}>
+        {/* Botão para ir para o cardápio */}
           <Link href="/cardapio" asChild>
             <TouchableOpacity style={styles.btnPrimario}>
               <Text style={styles.btnPrimarioTexto}>Ver Cardápio</Text>
             </TouchableOpacity>
           </Link>
 
+        {/* Botão para a página sobre a empresa */}
           <Link href="/sobre" asChild>
             <TouchableOpacity style={styles.btnSecundario}>
               <Text style={styles.btnSecundarioTexto}>Saiba Mais</Text>

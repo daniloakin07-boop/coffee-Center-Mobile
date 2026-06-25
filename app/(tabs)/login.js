@@ -52,7 +52,7 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      // Envio da requisição POST para o endpoint /login
+      // Envia os dados para o servidor e tenta fazer login
       const resposta = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
