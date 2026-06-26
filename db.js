@@ -1,9 +1,6 @@
-// Banco de dados MySQL usado pelo servidor
-// Configuração da conexão com o banco de dados MySQL
 require("dotenv").config();
 const mysql = require("mysql2/promise");
 
-// Cria um pool de conexões para permitir várias consultas simultâneas
 const conexao = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -11,7 +8,7 @@ const conexao = mysql.createPool({
     database: process.env.DB_NAME,
     port: process.env.DB_PORT,
     ssl: {
-        rejectUnauthorized: true
+        rejectUnauthorized: false  // muda de true para false
     }
 });
 
