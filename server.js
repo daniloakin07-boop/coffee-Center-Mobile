@@ -11,7 +11,7 @@ const app = express();
 // Lista de origens permitidas para acessar a API
 // Isso evita chamadas não autorizadas de domínios desconhecidos.
 const listOrigins = [
-    "http://localhost:8081",
+    "http://localhost:8082",
     "http://localhost:5501",
     "http://127.0.0.1:5501",
     "https://rickjordan20.github.io",
