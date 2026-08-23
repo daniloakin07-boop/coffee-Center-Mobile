@@ -9,6 +9,7 @@ import { Link, useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 import { isLoggedIn } from '../../auth'; // função simples que retorna se o usuário está logado
+import { adicionarCarrinho } from '../../carrinho';
 
 // ============================================================
 // DADOS DO CARDÁPIO
@@ -151,8 +152,14 @@ export default function Cardapio() {
     item.titulo.toLowerCase().includes(busca.toLowerCase())
   );
 
+  // Adiciona o item ao carrinho (AsyncStorage) e avisa o usuário
+  async function handleAdicionarCarrinho(item) {
+    const nome = await adicionarCarrinho(item);
+    Alert.alert('Adicionado!', `${nome} foi adicionado ao carrinho.`);
+  }
+
   // Função que renderiza cada card do cardápio na FlatList
-  // Cada item mostra imagem, nome, descrição e botão de detalhes
+  // Cada item mostra imagem, nome, descrição e botões de ação
   function renderItem({ item }) {
     return (
       <View style={styles.item}>
@@ -165,27 +172,38 @@ export default function Cardapio() {
         <Text style={styles.itemDescricao}>{item.descricao}</Text>
         <Text style={styles.itemPreco}>R$ {item.preco.toFixed(2)}</Text>
 
-        {/* BOTÃO VER DETALHES — passa parâmetros para a tela detalhes.js */}
-        <Link
-          href={{
-            pathname: '/detalhes',
-            params: {
-              titulo: item.titulo,
-              descricao: item.descricaoCompleta,
-              preco: item.preco.toFixed(2),
-              ingredientes: item.ingredientes,
-              origem: item.origem,
-              tempoPreparo: item.tempoPreparo,
-              categoria: item.categoria,
-              nivel: item.nivel,
-            },
-          }}
-          asChild
-        >
-          <TouchableOpacity style={styles.btnVerDetalhes}>
-            <Text style={styles.btnVerDetalhesTexto}>Ver detalhes</Text>
+        {/* BOTÕES DE AÇÃO */}
+        <View style={styles.botoesLinha}>
+          {/* BOTÃO VER DETALHES — passa parâmetros para a tela detalhes.js */}
+          <Link
+            href={{
+              pathname: '/detalhes',
+              params: {
+                titulo: item.titulo,
+                descricao: item.descricaoCompleta,
+                preco: item.preco.toFixed(2),
+                ingredientes: item.ingredientes,
+                origem: item.origem,
+                tempoPreparo: item.tempoPreparo,
+                categoria: item.categoria,
+                nivel: item.nivel,
+              },
+            }}
+            asChild
+          >
+            <TouchableOpacity style={[styles.btnAcao, styles.btnVerDetalhes]}>
+              <Text style={styles.btnVerDetalhesTexto}>Ver detalhes</Text>
+            </TouchableOpacity>
+          </Link>
+
+          {/* BOTÃO ADICIONAR AO CARRINHO */}
+          <TouchableOpacity
+            style={[styles.btnAcao, styles.btnAdicionar]}
+            onPress={() => handleAdicionarCarrinho(item)}
+          >
+            <Text style={styles.btnAdicionarTexto}>Adicionar</Text>
           </TouchableOpacity>
-        </Link>
+        </View>
 
       </View>
     );
@@ -307,16 +325,37 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 
-  // BOTÃO VER DETALHES
-  btnVerDetalhes: {
-    backgroundColor: '#c8922a',
+  // LINHA DE BOTÕES (Ver detalhes + Adicionar)
+  botoesLinha: {
+    flexDirection: 'row',
+    gap: 10,
     margin: 16,
+  },
+  btnAcao: {
+    flex: 1,
     paddingVertical: 10,
     borderRadius: 6,
     alignItems: 'center',
   },
+
+  // BOTÃO VER DETALHES
+  btnVerDetalhes: {
+    backgroundColor: '#c8922a',
+  },
   btnVerDetalhesTexto: {
     color: '#1a0f08',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+
+  // BOTÃO ADICIONAR AO CARRINHO
+  btnAdicionar: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: '#c8922a',
+  },
+  btnAdicionarTexto: {
+    color: '#c8922a',
     fontWeight: 'bold',
     fontSize: 14,
   },
