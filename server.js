@@ -115,6 +115,12 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ erro: "Usuário ou senha inválidos!" });
         }
 
+        req.session.usuario = {
+            id: usuario.id,
+            nome: usuario.nome,
+            email: usuario.email
+        };
+
         res.json({ mensagem: "Login realizado com sucesso!" });
 
     } catch (erro) {
@@ -141,6 +147,42 @@ app.post("/mensagem", async (req, res) => {
     } catch (erro) {
         console.log(erro);
         res.status(500).json({ erro: "Erro ao enviar mensagem" });
+    }
+});
+
+// Rota de Pedido - registra os itens do carrinho e gera o número de chamada
+// Reaproveita a mesma tabela "pedidos" do projeto web (mesmo banco Aiven).
+app.post("/pedido", async (req, res) => {
+    try {
+        if (!req.session.usuario) {
+            return res.status(401).json({ erro: "Você precisa estar logado para finalizar o pedido" });
+        }
+
+        const { itens } = req.body;
+
+        if (!itens || !Array.isArray(itens) || itens.length === 0) {
+            return res.status(400).json({ erro: "Carrinho vazio" });
+        }
+
+        const [linhas] = await conexao.execute(
+            "SELECT COALESCE(MAX(numero_chamado), 0) + 1 AS proximo FROM pedidos"
+        );
+        const numeroChamado = linhas[0].proximo;
+
+        for (const item of itens) {
+            await conexao.execute(
+                "INSERT INTO pedidos(numero_chamado, nome_pedido, preco, quantidade) VALUES (?,?,?,?)",
+                [numeroChamado, item.nome, item.preco, item.quantidade]
+            );
+        }
+
+        res.status(201).json({
+            mensagem: "Pedido realizado com sucesso!",
+            numeroPedido: numeroChamado
+        });
+    } catch (erro) {
+        console.log("Erro no Pedido: ", erro);
+        res.status(500).json({ erro: "Erro ao registrar pedido" });
     }
 });
 

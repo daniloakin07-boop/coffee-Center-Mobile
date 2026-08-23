@@ -72,6 +72,11 @@ export async function calcularTotal() {
   return carrinho.reduce((total, item) => total + item.preco * item.quantidade, 0);
 }
 
+export async function quantidadeItens() {
+  const carrinho = await pegarCarrinho();
+  return carrinho.reduce((total, item) => total + item.quantidade, 0);
+}
+
 export async function limparCarrinho() {
   await AsyncStorage.removeItem(CHAVE_CARRINHO);
 }

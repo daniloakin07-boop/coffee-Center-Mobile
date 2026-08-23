@@ -2,14 +2,24 @@
 // Cabeçalho reutilizável com logo e menu de navegação.
 // Equivalente ao <header class="topo"> do projeto web.
 
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useRouter, usePathname } from 'expo-router';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useRouter, usePathname, useFocusEffect } from 'expo-router';
+import { useState, useCallback } from 'react';
 import { isLoggedIn } from '../auth';
+import { quantidadeItens } from '../carrinho';
 
 export default function Topo() {
   // usePathname retorna a rota atual — usada para destacar o item ativo no menu
   const pathname = usePathname();
   const router = useRouter();
+  const [qtdCarrinho, setQtdCarrinho] = useState(0);
+
+  // Atualiza o contador toda vez que essa tela (ou qualquer tela que use o Topo) ganha foco
+  useFocusEffect(
+    useCallback(() => {
+      quantidadeItens().then(setQtdCarrinho);
+    }, [])
+  );
 
   return (
     <View style={styles.topo}>
@@ -55,6 +65,19 @@ export default function Topo() {
           </Text>
         </TouchableOpacity>
 
+        {/* ÍCONE DO CARRINHO */}
+        <TouchableOpacity onPress={() => router.push('/compras')} style={styles.carrinhoWrap}>
+          <Image
+            source={require('../assets/images/image-1787454516539.png')}
+            style={styles.carrinhoIcone}
+          />
+          {qtdCarrinho > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeTexto}>{qtdCarrinho}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -81,6 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    alignItems: 'center',
     gap: 16,
   },
   menuItem: {
@@ -90,5 +114,32 @@ const styles = StyleSheet.create({
   },
   menuItemAtivo: {
     color: '#c8922a',
+  },
+
+  // ÍCONE DO CARRINHO
+  carrinhoWrap: {
+    position: 'relative',
+  },
+  carrinhoIcone: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
+  badge: {
+    position: 'absolute',
+    top: -8,
+    right: -10,
+    backgroundColor: '#c8922a',
+    borderRadius: 9,
+    minWidth: 18,
+    height: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeTexto: {
+    color: '#1a0f08',
+    fontSize: 11,
+    fontWeight: 'bold',
   },
 });
