@@ -39,10 +39,12 @@ export default function Detalhes() {
 
   async function verificarLogin() {
     try {
+      // A API confirma a sessão do servidor antes de liberar o conteúdo detalhado.
       const resposta = await fetch(`${API_URL}/me`, {
         credentials: 'include',
       });
       if (!resposta.ok) {
+        // Usuário sem sessão volta ao login para não permanecer em uma área restrita.
         Alert.alert(
           'Acesso Restrito',
           'Você precisa fazer login para acessar os detalhes!',
@@ -70,6 +72,7 @@ export default function Detalhes() {
         </TouchableOpacity>
 
         {/* EMOJI DECORATIVO */}
+        {/* Espaço reservado para uma ilustração ou ícone do produto. */}
         <Text style={styles.emoji}></Text>
 
         {/* TÍTULO DO ITEM */}

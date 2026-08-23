@@ -42,10 +42,12 @@ const sessionConfig = {
 };
 
 if(process.env.NODE_ENV === "production"){
+    // Cookies cross-site precisam ser seguros quando a API está publicada.
     app.set("trust proxy", 1);
     sessionConfig.cookie.sameSite = "none";
     sessionConfig.cookie.secure = true;
 } else {
+    // No desenvolvimento local, HTTP e SameSite lax são suficientes.
     sessionConfig.cookie.sameSite = "lax";
     sessionConfig.cookie.secure = false;
 }
@@ -57,12 +59,14 @@ app.use(session(sessionConfig));
 
 // Rota principal
 app.get("/", (req, res) => {
+    // Endpoint simples para confirmar que a API está disponível.
     res.send("API Coffee Center Mobile funcionando");
 });
 
 // Rota de Cadastro
 app.post("/cadastro", async (req, res) => {
     try {
+        // O aplicativo envia estes três campos no corpo JSON da requisição.
         const { nome, email, senha } = req.body;
         console.log(req.body);
 
@@ -80,6 +84,7 @@ app.post("/cadastro", async (req, res) => {
 
         const senhaHash = await bcrypt.hash(senha, 10);
 
+        // A senha nunca é salva em texto puro; apenas o hash segue para o banco.
         const sql = `INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)`;
         await conexao.execute(sql, [nome, email, senhaHash]);
 
@@ -94,6 +99,7 @@ app.post("/cadastro", async (req, res) => {
 // Rota de Login
 app.post("/login", async (req, res) => {
     try {
+    // req.body || {} evita erro caso a requisição não possua corpo.
         const { email, senha } = req.body || {};
 
         if (!email || !senha) {
@@ -115,6 +121,7 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ erro: "Usuário ou senha inválidos!" });
         }
 
+        // Os dados mínimos do usuário ficam na sessão para proteger rotas futuras.
         req.session.usuario = {
             id: usuario.id,
             nome: usuario.nome,
@@ -133,6 +140,7 @@ app.post("/login", async (req, res) => {
 // Recebe nome, e-mail e mensagem do usuário e grava em uma tabela de mensagens.
 app.post("/mensagem", async (req, res) => {
     try {
+    // A rota recebe os campos do formulário de contato.
         const { nome, email, mensagem } = req.body;
 
         if (!nome || !email || !mensagem) {
@@ -154,6 +162,7 @@ app.post("/mensagem", async (req, res) => {
 // Reaproveita a mesma tabela "pedidos" do projeto web (mesmo banco Aiven).
 app.post("/pedido", async (req, res) => {
     try {
+    // Apenas usuários autenticados podem transformar o carrinho em pedido.
         if (!req.session.usuario) {
             return res.status(401).json({ erro: "Você precisa estar logado para finalizar o pedido" });
         }
@@ -169,6 +178,7 @@ app.post("/pedido", async (req, res) => {
         );
         const numeroChamado = linhas[0].proximo;
 
+        // Cada produto vira uma linha, todas compartilhando o mesmo número de chamada.
         for (const item of itens) {
             await conexao.execute(
                 "INSERT INTO pedidos(numero_chamado, nome_pedido, preco, quantidade) VALUES (?,?,?,?)",
@@ -189,5 +199,6 @@ app.post("/pedido", async (req, res) => {
 // Inicia o servidor na porta definida pelas variáveis de ambiente
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
+    // O Render fornece PORT; localmente usamos 3000 como padrão.
     console.log(`Servidor rodando na porta ${PORT}`);
 });

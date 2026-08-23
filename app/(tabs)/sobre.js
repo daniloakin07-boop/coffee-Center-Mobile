@@ -8,6 +8,7 @@ import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 
 export default function Sobre() {
+  // Esta tela é predominantemente informativa, por isso não precisa de estado local.
   return (
     <ScrollView style={styles.tela} showsVerticalScrollIndicator={false}>
 
@@ -48,6 +49,7 @@ export default function Sobre() {
         </View>
 
         {/* NOSSOS VALORES */}
+        {/* Cada valor é apresentado como uma linha reutilizando a mesma estrutura visual. */}
         <View style={styles.secao}>
           <Text style={styles.secaoTitulo}> Nossos Valores</Text>
 
@@ -89,6 +91,7 @@ export default function Sobre() {
         </View>
 
         {/* DIFERENCIAIS */}
+        {/* O grid organiza os principais diferenciais em duas colunas quando há espaço. */}
         <View style={styles.diferenciais}>
           <Text style={styles.secaoTitulo}> Nossos Diferenciais</Text>
           <View style={styles.diferencialGrid}>

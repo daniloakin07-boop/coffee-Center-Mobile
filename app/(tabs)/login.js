@@ -62,6 +62,7 @@ export default function Login() {
       });
 
       if (resposta.ok) {
+        // O backend validou a senha; o estado local libera as telas protegidas.
         loginUser();
         setMensagem(' Login realizado com sucesso!');
         // Navega para o cardápio após login bem-sucedido
@@ -69,11 +70,13 @@ export default function Login() {
           router.replace('/cardapio');
         }, 1000);
       } else {
+        // Mensagem genérica evita revelar se o e-mail existe no banco.
         setMensagem(' E-mail ou senha incorretos.');
       }
     } catch {
       setMensagem(' Erro ao conectar com o servidor.');
     } finally {
+      // O botão volta a ficar disponível após qualquer resultado da tentativa.
       setCarregando(false);
     }
   }

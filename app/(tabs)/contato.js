@@ -30,6 +30,7 @@ export default function Contato() {
   // Verifica se os campos estão preenchidos antes de enviar
   // ============================================================
   async function validarFormulario() {
+    // Impede uma chamada desnecessária à API quando o formulário está incompleto.
     // Validação: verifica se todos os campos estão preenchidos
     if (!nome || !email || !mensagem) {
       Alert.alert('Campos obrigatórios', 'Por favor, preencha todos os campos.');
@@ -53,6 +54,7 @@ export default function Contato() {
       });
 
       if (resposta.ok) {
+        // Depois da confirmação do servidor, o formulário fica pronto para uma nova mensagem.
         Alert.alert(
           ' Mensagem enviada!',
           `Obrigado, ${nome}! Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.`
@@ -62,6 +64,7 @@ export default function Contato() {
         setEmail('');
         setMensagem('');
       } else {
+        // Respostas HTTP com erro continuam sendo tratadas sem limpar os dados digitados.
         Alert.alert('Erro', 'Não foi possível enviar a mensagem. Tente novamente.');
       }
     } catch {

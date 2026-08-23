@@ -34,6 +34,7 @@ export default function Compras() {
   );
 
   async function carregar() {
+    // As duas leituras mantêm a lista e o total sincronizados com o armazenamento local.
     const carrinho = await pegarCarrinho();
     setItens(carrinho);
     setTotal(await calcularTotal());
@@ -84,6 +85,7 @@ export default function Compras() {
     }
 
     try {
+      // O carrinho local é enviado inteiro; o servidor cria o número do pedido.
       const resposta = await fetch(`${API_URL}/pedido`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -106,6 +108,7 @@ export default function Compras() {
       }
 
       await limparCarrinho();
+      // Depois do sucesso, exibe a chamada e zera a lista para evitar duplicidade.
       setNumeroPedido(dados.numeroPedido);
       carregar();
     } catch {
@@ -117,6 +120,7 @@ export default function Compras() {
   }
 
   function renderItem({ item }) {
+    // FlatList chama esta função uma vez para cada produto persistido.
     const imagem = imagemDoItem(item.id);
 
     return (
@@ -173,6 +177,7 @@ export default function Compras() {
         </View>
       }
       ListFooterComponent={
+        // O rodapé concentra resumo, ações do carrinho e confirmação do pedido.
         <View style={styles.resumo}>
           {itens.length > 0 && (
             <View style={styles.resumoCaixa}>

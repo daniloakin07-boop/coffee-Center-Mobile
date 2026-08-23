@@ -12,6 +12,7 @@ export default function RootLayout() {
       <StatusBar style="light" backgroundColor="#1a0f08" />
 
       {/* Stack navigator sem cabeçalho padrão — cada tela terá seu próprio topo */}
+      {/* O Stack controla a navegação entre as telas do aplicativo. */}
       <Stack screenOptions={{ headerShown: false }} />
     </>
   );

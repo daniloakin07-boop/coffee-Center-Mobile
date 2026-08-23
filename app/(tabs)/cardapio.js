@@ -20,6 +20,7 @@ import { sombra } from '../../sombra';
 
 // ============================================================
 export const cardapioData = [
+  // Cada objeto concentra os dados exibidos no card e enviados para detalhes.
   {
     id: '1',
     titulo: 'Café Expresso',
@@ -159,6 +160,7 @@ export default function Cardapio() {
 
   // Adiciona o item ao carrinho (AsyncStorage) e avisa o usuário
   async function handleAdicionarCarrinho(item) {
+    // A função do módulo também consolida quantidades de produtos repetidos.
     const nome = await adicionarCarrinho(item);
     Alert.alert('Adicionado!', `${nome} foi adicionado ao carrinho.`);
   }
@@ -244,6 +246,7 @@ export default function Cardapio() {
       }
 
       ListEmptyComponent={
+        // Feedback mostrado quando o texto de busca não encontra produtos.
         <Text style={styles.vazio}>Nenhum item encontrado para "{busca}".</Text>
       }
 

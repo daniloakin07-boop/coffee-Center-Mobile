@@ -1,8 +1,8 @@
 // app/(tabs)/index.js
 // Tela Inicial — equivalente ao index.html do projeto web.
 // Contém: seção hero com botões e cards de destaque.
-//react-native e tudo que esta dentro do return é o que vai ser renderizado na tela do app, o resto é apenas estilização
-//stylee sheet é o que contem todos os estilos que a gente usa é literalmente uma lista
+// O JSX dentro do return define o que aparece na tela; a StyleSheet abaixo
+// reúne os estilos usados por cada parte visual do componente.
 
 
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
@@ -13,6 +13,7 @@ import { sombra } from '../../sombra';
 
 // Tela inicial do app com destaque para o cardápio e informações rápidas.
 export default function Inicio() {
+  // O router é usado pelos botões para trocar de tela sem recarregar o app.
   const router = useRouter();
   return (
     <ScrollView style={styles.tela} showsVerticalScrollIndicator={false}>
@@ -44,6 +45,7 @@ export default function Inicio() {
       </View>
 
       {/* CARDS DE DESTAQUE */}
+      {/* Conteúdo institucional resumido para apresentar a proposta da cafeteria. */}
       <View style={styles.cards}>
 
         <View style={styles.card}>

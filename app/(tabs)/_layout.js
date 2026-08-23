@@ -6,6 +6,7 @@
 import { Stack } from 'expo-router';
 
 export default function TabsLayout() {
+  // O grupo recebe suas rotas por meio dos arquivos existentes nesta pasta.
   return (
     <Stack screenOptions={{ headerShown: false }} />
   );

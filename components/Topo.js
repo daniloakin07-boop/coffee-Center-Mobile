@@ -17,6 +17,8 @@ export default function Topo() {
   // Atualiza o contador toda vez que essa tela (ou qualquer tela que use o Topo) ganha foco
   useFocusEffect(
     useCallback(() => {
+      // A leitura ocorre ao voltar para a tela, mantendo o badge sincronizado
+      // depois que outro componente altera o carrinho.
       quantidadeItens().then(setQtdCarrinho);
     }, [])
   );
@@ -33,6 +35,7 @@ export default function Topo() {
 
       {/* MENU DE NAVEGAÇÃO */}
       <View style={styles.menu}>
+        {/* Cada botão envia o usuário para uma rota do Expo Router. */}
 
         <TouchableOpacity onPress={() => router.push('/')}>
           <Text style={[styles.menuItem, pathname === '/' && styles.menuItemAtivo]}>

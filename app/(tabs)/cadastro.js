@@ -75,6 +75,7 @@ export default function Cadastro() {
       });
 
       if (resposta.ok) {
+        // O cadastro foi aceito: informa o usuário e prepara a ida para o login.
         setMensagem(' Cadastro realizado! Redirecionando...');
         setSucesso(true);
         // Navega para o login após cadastro bem-sucedido
@@ -82,6 +83,7 @@ export default function Cadastro() {
           router.replace('/login');
         }, 1500);
       } else {
+        // A API pode informar conflito ou outro erro de validação no campo erro.
         const dados = await resposta.json();
         setMensagem(` ${dados.erro || 'Erro ao realizar cadastro.'}`);
         setSucesso(false);
@@ -90,6 +92,7 @@ export default function Cadastro() {
       setMensagem(' Erro ao conectar com o servidor.');
       setSucesso(false);
     } finally {
+      // Libera o botão tanto em sucesso quanto em falha da requisição.
       setCarregando(false);
     }
   }

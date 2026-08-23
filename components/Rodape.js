@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Rodape() {
+  // O router permite que o link do rodapé funcione em qualquer tela.
   const router = useRouter();
 
   return (
