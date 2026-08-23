@@ -1,19 +1,18 @@
-
 // Rodapé global usado em todas as telas
 // Mostra informações de direitos autorais e link rápido para contato.
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 export default function Rodape() {
+  const router = useRouter();
+
   return (
     <View style={styles.rodape}>
       <Text style={styles.texto}>® 2026 Coffee Center. Todos os Direitos Reservados</Text>
 
-      <Link href="/contato" asChild>
-        <TouchableOpacity>
-          <Text style={styles.link}>Entre em Contato</Text>
-        </TouchableOpacity>
-      </Link>
+      <TouchableOpacity onPress={() => router.push('/contato')}>
+        <Text style={styles.link}>Entre em Contato</Text>
+      </TouchableOpacity>
     </View>
   );
 }

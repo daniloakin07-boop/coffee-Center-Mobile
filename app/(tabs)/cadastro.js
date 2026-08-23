@@ -12,10 +12,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useState } from 'react';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 import { API_URL } from '../../config';
+import { sombra } from '../../sombra';
 
 export default function Cadastro() {
   // ============================================================
@@ -182,11 +183,9 @@ export default function Cadastro() {
           {/* LINK PARA LOGIN */}
           <View style={styles.linkAuth}>
             <Text style={styles.linkAuthTexto}>Já possui uma conta? </Text>
-            <Link href="/login" asChild>
-              <TouchableOpacity>
-                <Text style={styles.linkAuthLink}>Fazer Login</Text>
-              </TouchableOpacity>
-            </Link>
+            <TouchableOpacity onPress={() => router.push('/login')}>
+              <Text style={styles.linkAuthLink}>Fazer Login</Text>
+            </TouchableOpacity>
           </View>
 
         </View>
@@ -219,11 +218,7 @@ const styles = StyleSheet.create({
     padding: 28,
     width: '100%',
     maxWidth: 400,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    ...sombra({ elevation: 4 }),
   },
 
   // TÍTULO

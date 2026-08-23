@@ -5,11 +5,12 @@
 
 import { View, Text, FlatList, TextInput, TouchableOpacity, Image, Alert, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 import { isLoggedIn } from '../../auth'; // função simples que retorna se o usuário está logado
 import { adicionarCarrinho } from '../../carrinho';
+import { sombra } from '../../sombra';
 
 // ============================================================
 // DADOS DO CARDÁPIO
@@ -175,26 +176,26 @@ export default function Cardapio() {
         {/* BOTÕES DE AÇÃO */}
         <View style={styles.botoesLinha}>
           {/* BOTÃO VER DETALHES — passa parâmetros para a tela detalhes.js */}
-          <Link
-            href={{
-              pathname: '/detalhes',
-              params: {
-                titulo: item.titulo,
-                descricao: item.descricaoCompleta,
-                preco: item.preco.toFixed(2),
-                ingredientes: item.ingredientes,
-                origem: item.origem,
-                tempoPreparo: item.tempoPreparo,
-                categoria: item.categoria,
-                nivel: item.nivel,
-              },
-            }}
-            asChild
+          <TouchableOpacity
+            style={[styles.btnAcao, styles.btnVerDetalhes]}
+            onPress={() =>
+              router.push({
+                pathname: '/detalhes',
+                params: {
+                  titulo: item.titulo,
+                  descricao: item.descricaoCompleta,
+                  preco: item.preco.toFixed(2),
+                  ingredientes: item.ingredientes,
+                  origem: item.origem,
+                  tempoPreparo: item.tempoPreparo,
+                  categoria: item.categoria,
+                  nivel: item.nivel,
+                },
+              })
+            }
           >
-            <TouchableOpacity style={[styles.btnAcao, styles.btnVerDetalhes]}>
-              <Text style={styles.btnVerDetalhesTexto}>Ver detalhes</Text>
-            </TouchableOpacity>
-          </Link>
+            <Text style={styles.btnVerDetalhesTexto}>Ver detalhes</Text>
+          </TouchableOpacity>
 
           {/* BOTÃO ADICIONAR AO CARRINHO */}
           <TouchableOpacity
@@ -285,12 +286,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 15,
     borderRadius: 8,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
     overflow: 'hidden',
+    ...sombra(),
   },
 
   // IMAGEM

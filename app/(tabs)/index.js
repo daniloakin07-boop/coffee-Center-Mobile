@@ -6,12 +6,14 @@
 
 
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
+import { sombra } from '../../sombra';
 
 // Tela inicial do app com destaque para o cardápio e informações rápidas.
 export default function Inicio() {
+  const router = useRouter();
   return (
     <ScrollView style={styles.tela} showsVerticalScrollIndicator={false}>
 
@@ -30,18 +32,14 @@ export default function Inicio() {
         {/* BOTÕES DE AÇÃO */}
         <View style={styles.botoes}>
         {/* Botão para ir para o cardápio */}
-          <Link href="/cardapio" asChild>
-            <TouchableOpacity style={styles.btnPrimario}>
-              <Text style={styles.btnPrimarioTexto}>Ver Cardápio</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity style={styles.btnPrimario} onPress={() => router.push('/cardapio')}>
+            <Text style={styles.btnPrimarioTexto}>Ver Cardápio</Text>
+          </TouchableOpacity>
 
         {/* Botão para a página sobre a empresa */}
-          <Link href="/sobre" asChild>
-            <TouchableOpacity style={styles.btnSecundario}>
-              <Text style={styles.btnSecundarioTexto}>Saiba Mais</Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity style={styles.btnSecundario} onPress={() => router.push('/sobre')}>
+            <Text style={styles.btnSecundarioTexto}>Saiba Mais</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -148,11 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2e1a0e',
     padding: 20,
     borderRadius: 8,
-    elevation: 3,        // sombra no Android
-    shadowColor: '#000', // sombra no iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    ...sombra(),
   },
   cardTitulo: {
     color: '#c8922a',

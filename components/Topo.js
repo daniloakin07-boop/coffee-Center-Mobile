@@ -3,68 +3,57 @@
 // Equivalente ao <header class="topo"> do projeto web.
 
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link, usePathname } from 'expo-router';
+import { useRouter, usePathname } from 'expo-router';
 import { isLoggedIn } from '../auth';
 
 export default function Topo() {
   // usePathname retorna a rota atual — usada para destacar o item ativo no menu
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <View style={styles.topo}>
 
       {/* LOGO */}
-      <Link href="/" asChild>
-        <TouchableOpacity>
-          <Text style={styles.logo}>
-            Coffee<Text style={styles.logoDestaque}>Center</Text>
-          </Text>
-        </TouchableOpacity>
-      </Link>
+      <TouchableOpacity onPress={() => router.push('/')}>
+        <Text style={styles.logo}>
+          Coffee<Text style={styles.logoDestaque}>Center</Text>
+        </Text>
+      </TouchableOpacity>
 
       {/* MENU DE NAVEGAÇÃO */}
       <View style={styles.menu}>
 
-        <Link href="/" asChild>
-          <TouchableOpacity>
-            <Text style={[styles.menuItem, pathname === '/' && styles.menuItemAtivo]}>
-              Início
-            </Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity onPress={() => router.push('/')}>
+          <Text style={[styles.menuItem, pathname === '/' && styles.menuItemAtivo]}>
+            Início
+          </Text>
+        </TouchableOpacity>
 
         {/* Se não estiver logado, direciona o usuário para a tela de login */}
-        <Link href={isLoggedIn() ? '/cardapio' : '/login'} asChild>
-          <TouchableOpacity>
-            <Text style={[styles.menuItem, pathname === '/cardapio' && styles.menuItemAtivo]}>
-              Cardápio
-            </Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity onPress={() => router.push(isLoggedIn() ? '/cardapio' : '/login')}>
+          <Text style={[styles.menuItem, pathname === '/cardapio' && styles.menuItemAtivo]}>
+            Cardápio
+          </Text>
+        </TouchableOpacity>
 
-        <Link href="/sobre" asChild>
-          <TouchableOpacity>
-            <Text style={[styles.menuItem, pathname === '/sobre' && styles.menuItemAtivo]}>
-              Sobre
-            </Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity onPress={() => router.push('/sobre')}>
+          <Text style={[styles.menuItem, pathname === '/sobre' && styles.menuItemAtivo]}>
+            Sobre
+          </Text>
+        </TouchableOpacity>
 
-        <Link href="/contato" asChild>
-          <TouchableOpacity>
-            <Text style={[styles.menuItem, pathname === '/contato' && styles.menuItemAtivo]}>
-              Contato
-            </Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity onPress={() => router.push('/contato')}>
+          <Text style={[styles.menuItem, pathname === '/contato' && styles.menuItemAtivo]}>
+            Contato
+          </Text>
+        </TouchableOpacity>
 
-        <Link href="/login" asChild>
-          <TouchableOpacity>
-            <Text style={[styles.menuItem, pathname === '/login' && styles.menuItemAtivo]}>
-              Login
-            </Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity onPress={() => router.push('/login')}>
+          <Text style={[styles.menuItem, pathname === '/login' && styles.menuItemAtivo]}>
+            Login
+          </Text>
+        </TouchableOpacity>
 
       </View>
     </View>
