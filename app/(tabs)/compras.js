@@ -2,12 +2,14 @@
 // Tela do Carrinho — equivalente ao carrinho.html do projeto web.
 // Reaproveita a mesma rota POST /pedido do backend (nenhuma mudança no server.js foi necessária).
 
-import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, Alert, StyleSheet } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 import { API_URL } from '../../config';
+import { sombra } from '../../sombra';
+import { cardapioData } from './cardapio';
 import {
   pegarCarrinho,
   aumentarQuantidade,
@@ -37,6 +39,14 @@ export default function Compras() {
     setTotal(await calcularTotal());
   }
 
+  // Busca a imagem do produto no cardápio pelo id (não guardamos a imagem no
+  // AsyncStorage — só id, nome, preço e quantidade — porque require() não é
+  // serializável em JSON de forma confiável)
+  function imagemDoItem(id) {
+    const produto = cardapioData.find((p) => p.id === id);
+    return produto ? produto.img : null;
+  }
+
   async function handleAumentar(id) {
     await aumentarQuantidade(id);
     carregar();
@@ -60,6 +70,7 @@ export default function Compras() {
         style: 'destructive',
         onPress: async () => {
           await limparCarrinho();
+          setNumeroPedido(null);
           carregar();
         },
       },
@@ -106,8 +117,12 @@ export default function Compras() {
   }
 
   function renderItem({ item }) {
+    const imagem = imagemDoItem(item.id);
+
     return (
       <View style={styles.produto}>
+        {imagem && <Image source={imagem} style={styles.produtoImagem} />}
+
         <View style={{ flex: 1 }}>
           <Text style={styles.nome}>{item.nome}</Text>
           <Text style={styles.preco}>R$ {item.preco.toFixed(2)}</Text>
@@ -122,14 +137,15 @@ export default function Compras() {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.subtotal}>
-            Subtotal: R$ {(item.preco * item.quantidade).toFixed(2)}
-          </Text>
+          <View style={styles.rodapeItem}>
+            <Text style={styles.subtotal}>
+              R$ {(item.preco * item.quantidade).toFixed(2)}
+            </Text>
+            <TouchableOpacity onPress={() => handleRemover(item.id)}>
+              <Text style={styles.removerTexto}>Remover</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <TouchableOpacity style={styles.remover} onPress={() => handleRemover(item.id)}>
-          <Text style={styles.removerTexto}>Remover</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -144,25 +160,40 @@ export default function Compras() {
       contentContainerStyle={{ backgroundColor: '#1a0f08' }}
       ListHeaderComponent={
         <View>
-          <Topo ativo="compras" />
+          <Topo />
           <Text style={styles.titulo}>Seu Carrinho</Text>
         </View>
       }
-      ListEmptyComponent={<Text style={styles.vazio}>Seu carrinho está vazio.</Text>}
+      ListEmptyComponent={
+        <View style={styles.vazioBox}>
+          <Text style={styles.vazio}>Seu carrinho está vazio.</Text>
+          <TouchableOpacity style={styles.btnContinuarVazio} onPress={() => router.push('/cardapio')}>
+            <Text style={styles.btnContinuarVazioTexto}>Ver Cardápio</Text>
+          </TouchableOpacity>
+        </View>
+      }
       ListFooterComponent={
         <View style={styles.resumo}>
-          <View style={styles.resumoLinha}>
-            <Text style={styles.resumoLabel}>Total:</Text>
-            <Text style={styles.resumoValor}>R$ {total.toFixed(2)}</Text>
-          </View>
+          {itens.length > 0 && (
+            <View style={styles.resumoCaixa}>
+              <View style={styles.resumoLinha}>
+                <Text style={styles.resumoLabel}>Total</Text>
+                <Text style={styles.resumoValor}>R$ {total.toFixed(2)}</Text>
+              </View>
 
-          <TouchableOpacity style={styles.btnFinalizar} onPress={handleFinalizar}>
-            <Text style={styles.btnFinalizarTexto}>Finalizar Pedido</Text>
-          </TouchableOpacity>
+              <TouchableOpacity style={styles.btnFinalizar} onPress={handleFinalizar}>
+                <Text style={styles.btnFinalizarTexto}>Finalizar Pedido</Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnLimpar} onPress={handleLimpar}>
-            <Text style={styles.btnLimparTexto}>Limpar Carrinho</Text>
-          </TouchableOpacity>
+              <TouchableOpacity style={styles.btnContinuar} onPress={() => router.push('/cardapio')}>
+                <Text style={styles.btnContinuarTexto}>Continuar Comprando</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.btnLimpar} onPress={handleLimpar}>
+                <Text style={styles.btnLimparTexto}>Limpar Carrinho</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {numeroPedido !== null && (
             <View style={styles.confirmacao}>
@@ -172,6 +203,9 @@ export default function Compras() {
                 Por gentileza, ao final da refeição, passe no caixa informando esse número para
                 efetuar o pagamento.
               </Text>
+              <TouchableOpacity style={styles.btnContinuar} onPress={() => router.push('/cardapio')}>
+                <Text style={styles.btnContinuarTexto}>Voltar ao Cardápio</Text>
+              </TouchableOpacity>
             </View>
           )}
 
@@ -191,52 +225,88 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 16,
   },
+
+  // CARRINHO VAZIO
+  vazioBox: {
+    alignItems: 'center',
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
   vazio: {
     color: '#a89070',
     textAlign: 'center',
-    marginTop: 30,
     fontSize: 15,
-    padding: 20,
+    marginBottom: 20,
   },
+  btnContinuarVazio: {
+    backgroundColor: '#c8922a',
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    borderRadius: 8,
+  },
+  btnContinuarVazioTexto: {
+    color: '#1a0f08',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+
+  // CARD DO PRODUTO
   produto: {
     flexDirection: 'row',
     backgroundColor: '#2e1a0e',
     marginHorizontal: 20,
-    marginBottom: 12,
-    borderRadius: 8,
+    marginBottom: 14,
+    borderRadius: 10,
     padding: 14,
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    ...sombra({ elevation: 2, offsetY: 1, opacity: 0.25, radius: 3 }),
+  },
+  produtoImagem: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    marginRight: 14,
+    resizeMode: 'cover',
   },
   nome: { color: '#f0e6d0', fontSize: 16, fontWeight: 'bold' },
   preco: { color: '#d8c6a8', fontSize: 13, marginTop: 2 },
   quantidadeLinha: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 10 },
   qtdBtn: {
-    width: 28,
-    height: 28,
+    width: 26,
+    height: 26,
     borderWidth: 1,
     borderColor: '#c8922a',
-    borderRadius: 4,
+    borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  qtdBtnTexto: { color: '#c8922a', fontWeight: 'bold', fontSize: 16 },
-  qtdValor: { color: '#f0e6d0', fontSize: 15, minWidth: 20, textAlign: 'center' },
-  subtotal: { color: '#c8922a', fontWeight: 'bold', marginTop: 8, fontSize: 13 },
-  remover: {
-    backgroundColor: '#a33636',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 6,
+  qtdBtnTexto: { color: '#c8922a', fontWeight: 'bold', fontSize: 15 },
+  qtdValor: { color: '#f0e6d0', fontSize: 14, minWidth: 18, textAlign: 'center' },
+  rodapeItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
   },
-  removerTexto: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
-  resumo: { paddingHorizontal: 20, marginTop: 10 },
+  subtotal: { color: '#c8922a', fontWeight: 'bold', fontSize: 14 },
+  removerTexto: { color: '#e06a6a', fontSize: 12, fontWeight: 'bold' },
+
+  // RESUMO
+  resumo: { paddingHorizontal: 20, marginTop: 6 },
+  resumoCaixa: {
+    backgroundColor: '#2e1a0e',
+    borderRadius: 10,
+    padding: 18,
+    marginBottom: 20,
+    ...sombra({ elevation: 2, offsetY: 1, opacity: 0.25, radius: 3 }),
+  },
   resumoLinha: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderTopColor: '#4a2f1c',
-    paddingVertical: 14,
-    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#4a2f1c',
+    paddingBottom: 14,
+    marginBottom: 14,
   },
   resumoLabel: { color: '#f0e6d0', fontSize: 18, fontWeight: 'bold' },
   resumoValor: { color: '#c8922a', fontSize: 18, fontWeight: 'bold' },
@@ -248,15 +318,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   btnFinalizarTexto: { color: '#1a0f08', fontWeight: 'bold', fontSize: 16 },
+  btnContinuar: {
+    borderWidth: 2,
+    borderColor: '#c8922a',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  btnContinuarTexto: { color: '#c8922a', fontWeight: 'bold', fontSize: 14 },
   btnLimpar: {
     borderWidth: 2,
     borderColor: '#a33636',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 20,
   },
   btnLimparTexto: { color: '#a33636', fontWeight: 'bold', fontSize: 14 },
+
+  // CONFIRMAÇÃO DO PEDIDO
   confirmacao: {
     backgroundColor: '#2e1a0e',
     borderWidth: 2,
@@ -268,5 +348,11 @@ const styles = StyleSheet.create({
   },
   confirmacaoTitulo: { color: '#c8922a', fontSize: 18, fontWeight: 'bold', marginBottom: 6 },
   confirmacaoNumero: { color: '#c8922a', fontSize: 40, fontWeight: 'bold', marginVertical: 6 },
-  confirmacaoTexto: { color: '#d8c6a8', fontSize: 13, textAlign: 'center', lineHeight: 18 },
+  confirmacaoTexto: {
+    color: '#d8c6a8',
+    fontSize: 13,
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 16,
+  },
 });

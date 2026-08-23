@@ -5,7 +5,7 @@
 
 import { View, Text, FlatList, TextInput, TouchableOpacity, Image, Alert, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, useRootNavigationState } from 'expo-router';
 import Topo from '../../components/Topo';
 import Rodape from '../../components/Rodape';
 import { isLoggedIn } from '../../auth'; // função simples que retorna se o usuário está logado
@@ -19,7 +19,7 @@ import { sombra } from '../../sombra';
 // As imagens usam require() 
 
 // ============================================================
-const cardapioData = [
+export const cardapioData = [
   {
     id: '1',
     titulo: 'Café Expresso',
@@ -128,12 +128,16 @@ export default function Cardapio() {
   const [busca, setBusca] = useState('');
 
   const router = useRouter();
+  const rootNavigationState = useRootNavigationState();
 
   // Verificação de login ao abrir a tela
   // Equivalente ao bloco <script> no cardapio.html
+  // Só roda depois que o roteador terminou de montar — evita
+  // "Attempted to navigate before mounting the Root Layout component"
   useEffect(() => {
+    if (!rootNavigationState?.key) return;
     verificarLogin();
-  }, []);
+  }, [rootNavigationState?.key]);
 
   // Verifica se o usuário está logado antes de mostrar o cardápio
   // Se não estiver, exibe alerta e manda para a tela de login
